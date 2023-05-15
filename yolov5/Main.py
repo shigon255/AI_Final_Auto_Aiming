@@ -7,7 +7,7 @@ from utils.FPSUtils import *
 import cv2
 
 
-dll = cdll.LoadLibrary(r'lib/Dll.dll')  # 加載用C語言封裝過的易鍵鼠dll
+# dll = cdll.LoadLibrary(r'lib/Dll.dll')  # 加載用C語言封裝過的易鍵鼠dll
 
 
 def shoot_screen():
