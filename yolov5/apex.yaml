@@ -1,0 +1,7 @@
+path: ../datasets/apex  
+train: images/train     
+val: images/train       
+test:                   
+
+nc: 1           
+names: ['person']
