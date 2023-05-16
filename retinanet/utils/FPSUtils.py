@@ -51,8 +51,8 @@ def FindBestCenter(detections):
     for dt in detections:
 
         # choose the nearest person
-        # from the boxes whose confidence > 0.8 
-        if dt['conf'] > 0.80:  
+        # from the boxes whose score > 0.8  (note that we assume that score is normalized to [0, 1], I'm not sure whether it's right or not)
+        if dt['score'] > 0.80:  
             dt_p = dt['position']  
             dt_c = Center(dt_p)  # w,h
 
@@ -61,7 +61,7 @@ def FindBestCenter(detections):
                 if dt_d < cp['d']:
                     cp['p'] = dt['position']
                     cp['d'] = dt_d
-                    cp['c'] = dt['conf']
+                    cp['c'] = dt['score']
                     pass
 
     if cp['d'] < float('inf'):  

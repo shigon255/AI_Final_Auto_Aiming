@@ -10,6 +10,7 @@ import cv2
 def shoot_screen():
     while True:
         img = pyautogui.screenshot(region=[LEFT, TOP, 640, 640])  # take screenshot, input: (left, top, w, h)
+        # path to save screenshots
         images_path = 'images/'
         img.save(
             images_path + str(int(time.time())) + ''.join(
@@ -17,9 +18,14 @@ def shoot_screen():
         time.sleep(0.5)
 
 if __name__ == "__main__":
+    try:
+        init()
+    except Exception as e:
+        print("Initialization error!")
+        print("Error: "+str(e))
     while True:
         try:
-            img = ScreenShout()
+            img = ScreenShout() 
             detections = detect(img)
             print("start move")
             btc, btp = FindBestCenter(detections)
@@ -27,7 +33,7 @@ if __name__ == "__main__":
             print("detection: ")
             print(detections)
             
-            if btc is not None: 
+            if btc is not None:
               print("Coordinate: ", int(LEFT + btc[0]), int(TOP + btc[1]))
               pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
             
