@@ -25,6 +25,7 @@ if __name__ == "__main__":
         print("Error: "+str(e))
     while True:
         try:
+            print("\n----------------------")
             # Take screen shot
             t = time.time()
             print("Start taking screen shot")
@@ -46,7 +47,8 @@ if __name__ == "__main__":
             if btc is not None:
               print("Coordinate: ", int(LEFT + btc[0]), int(TOP + btc[1]))
               pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
-            print("End findmoving & moving, it took " + str(time.time() - t))
+            print("End findmoving & moving, it took " + str(time.time() - t) + "s")
+            print("----------------------\n")
             
             
         except Exception as e:

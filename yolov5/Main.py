@@ -21,15 +21,31 @@ if __name__ == "__main__":
 
     while True:
         try:
-            img = ScreenShout()  
-            detections = detect(img) 
-            btc, btp = FindBestCenter(detections)
+            print("\n----------------------")
+            # Take screen shot
+            t = time.time()
+            print("Start taking screen shot")
+            img = ScreenShout() 
+            print("End taking screen shot, it took " + str(time.time()-t) + "s")
 
+            # Detection
+            t = time.time()
+            print("Start detection")
+            detections = detect(img)
+            print("End detection, it took " + str(time.time()-t) + "s")
             print("detection: ")
             print(detections)
+
+            # Find center to move
+            t = time.time()
+            print("Start finding & moving")
+            btc, btp = FindBestCenter(detections)
             if btc is not None:
               print("Coordinate: ", int(LEFT + btc[0]), int(TOP + btc[1]))
               pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
+            print("End findmoving & moving, it took " + str(time.time() - t) + "s")
+            print("----------------------\n")
+            
         except Exception as e:
             print('ERROR!')
             print("Message: ", str(e))
