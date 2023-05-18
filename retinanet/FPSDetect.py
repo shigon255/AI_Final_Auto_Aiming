@@ -32,6 +32,8 @@ labels = None
 def init():
     class_list = './class_list.csv'
     model_path = './model_final.pt'
+    global model
+    global labels
     with open(class_list, 'r') as f:
         classes = load_classes(csv.reader(f, delimiter=','))
 
@@ -53,6 +55,7 @@ def detect(img0):
     :param img0: 要檢測的圖像
     :return: {'class': cls(目標類型), 'conf': conf(置信分數), 'position': xywh(目標螢幕座標)}
     """
+    image = img0
     image_orig = img0.copy()
 
     rows, cols, cns = image.shape
@@ -99,9 +102,9 @@ def detect(img0):
         print(image.shape, image_orig.shape, scale)
         scores, classification, transformed_anchors = model(image.cuda().float())
         # for debug
-        # print("scores: ", scores) # save the stores of each box
-        # print("classification: ", classification) # save the labels of each box
-        # print("transofmed_anchors: ", transformed_anchors) # save the bbox of each box
+        print("scores: ", scores) # save the stores of each box
+        print("classification: ", classification) # save the labels of each box
+        print("transofmed_anchors: ", transformed_anchors) # save the bbox of each box
         idxs = np.where(scores.cpu() > 0.5)
 
         for j in range(idxs[0].shape[0]):
@@ -114,7 +117,7 @@ def detect(img0):
             y2 = int(bbox[3] / scale)
             w  = x2-x1
             h  = y2-y1
-            assert x1 > x2 or y1 > y2 or w < 0 or h < 0
+            # assert x1 > x2 or y1 > y2 or w < 0 or h < 0
             xywh = [x1, y1, w, h]
             xywh = [round(x) for x in xywh]
             [xywh[0] - xywh[2] // 2, xywh[1] - xywh[3] // 2, xywh[2],
