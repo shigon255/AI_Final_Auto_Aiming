@@ -4,8 +4,30 @@ import time
 from FPSDetect import *
 from ctypes import *
 from utils.FPSUtils import *
-import os
-import cv2
+import win32api
+import threading
+import utils.ghub_mouse as ghub
+
+VK_W = 0x57
+
+pressed = False
+keyboard_terminate = threading.Event()
+btc = None
+
+def monitor_keyboard():
+    global pressed
+    global keyboard_terminate
+    global btc
+    while not keyboard_terminate.is_set():
+        w_key_state = win32api.GetKeyState(VK_W)
+        pressed = w_key_state < 0
+        if btc is not None and w_key_state < 0:# if the left mouse button is pressed
+            print("Coordinate: ", int(LEFT + btc[0]), int(TOP + btc[1]))
+            # pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
+            # windll.user32.SetCursorPos(int(LEFT + btc[0]), int(TOP + btc[1]))
+            ghub.mouse_xy(int(LEFT + btc[0]), int(TOP + btc[1]))
+    print("keyboard interrupt in keyboard thread")
+
 
 def shoot_screen():
     while True:
@@ -18,40 +40,47 @@ def shoot_screen():
         time.sleep(0.5)
 
 if __name__ == "__main__":
+    print("Initialize")
+    keyboard_thread = threading.Thread(target=monitor_keyboard)
+    keyboard_thread.start()
     try:
         init()
     except Exception as e:
         print("Initialization error!")
         print("Error: "+str(e))
-    while True:
-        try:
-            print("\n----------------------")
-            # Take screen shot
-            t = time.time()
-            print("Start taking screen shot")
-            img = ScreenShout() 
-            print("End taking screen shot, it took " + str(time.time()-t) + "s")
+    try:
+        while True:
+            try:
+                print("\n----------------------")
+                # Take screen shot
+                t = time.time()
+                print("Start taking screen shot")
+                img = ScreenShout() 
+                print("End taking screen shot, it took " + str(time.time()-t) + "s")
 
-            # Detection
-            t = time.time()
-            print("Start detection")
-            detections = detect(img)
-            print("End detection, it took " + str(time.time()-t) + "s")
-            print("detection: ")
-            print(detections)
+                # Detection
+                t = time.time()
+                print("Start detection")
+                detections = detect(img)
+                print("End detection, it took " + str(time.time()-t) + "s")
+                print("detection: ")
+                print(detections)
 
-            # Find center to move
-            t = time.time()
-            print("Start finding & moving")
-            btc, btp = FindBestCenter(detections)
-            if btc is not None:
-              print("Coordinate: ", int(LEFT + btc[0]), int(TOP + btc[1]))
-              pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
-            print("End findmoving & moving, it took " + str(time.time() - t) + "s")
-            print("----------------------\n")
-            
-            
-        except Exception as e:
-            print('ERROR!')
-            print('Error: '+ str(e))
-            break
+                # Find center to move
+                t = time.time()
+                print("Start finding")
+                btc, btp = FindBestCenter(detections)
+                print("End finding, it took " + str(time.time() - t) + "s")
+
+                print("----------------------\n")
+            except:
+                break
+        raise
+    except Exception as e:
+        print('ERROR!')
+        print('Error: '+ str(e))
+        keyboard_terminate.set()
+        print("keyboard interrupt in main thread")
+
+    keyboard_thread.join()
+    print("program finish")

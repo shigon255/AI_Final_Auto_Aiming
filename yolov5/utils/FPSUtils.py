@@ -3,7 +3,7 @@ import math
 import pyautogui
 
 import numpy as np
-import cv2
+import dxcam
 
 SCREEN_W = 1920  # screen width
 SCREEN_H = 1080  # screen height
@@ -15,12 +15,14 @@ SCREENSHOT_H = 640  # screenshot height
 LEFT = SCREEN_CX - SCREENSHOT_W // 2  # top left corner of detecting frame.x
 TOP = SCREEN_CY - SCREENSHOT_H // 2  # top left corner of detecting frame.y
 
+camera = dxcam.create()
 
 def ScreenShout():
     """
     :return: (h,w,c)
     """
-    img = pyautogui.screenshot(region=[LEFT, TOP, SCREENSHOT_W, SCREENSHOT_H])
+    # img = pyautogui.screenshot(region=[LEFT, TOP, SCREENSHOT_W, SCREENSHOT_H])
+    img = camera.grab(region=(LEFT, TOP, LEFT+SCREENSHOT_W, TOP+SCREENSHOT_H))
     return np.array(img)
 
 

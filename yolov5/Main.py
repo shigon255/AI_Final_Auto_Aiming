@@ -6,6 +6,7 @@ from ctypes import *
 from utils.FPSUtils import *
 import win32api
 import threading
+import utils.ghub_mouse as ghub
 
 VK_W = 0x57
 
@@ -22,7 +23,9 @@ def monitor_keyboard():
         pressed = w_key_state < 0
         if btc is not None and w_key_state < 0:# if the left mouse button is pressed
             print("Coordinate: ", int(LEFT + btc[0]), int(TOP + btc[1]))
-            pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
+            # pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
+            # windll.user32.SetCursorPos(int(LEFT + btc[0]), int(TOP + btc[1]))
+            ghub.mouse_xy(int(LEFT + btc[0]), int(TOP + btc[1]))
     print("keyboard interrupt in keyboard thread")
 
 def shoot_screen():
