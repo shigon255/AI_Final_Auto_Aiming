@@ -6,10 +6,7 @@ from ctypes import *
 from utils.FPSUtils import *
 import win32api
 import threading
-import os
-import cv2
 
-VK_LBUTTON = 0x01
 VK_W = 0x57
 
 pressed = False
