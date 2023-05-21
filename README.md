@@ -4,7 +4,7 @@
 
 
 # Usage
-## Run the program
+## Setup & Activate the program
 ### yolov5 & yolov8
 + build environment from yolo_environment.yml
 + clone the repo
@@ -17,6 +17,10 @@
 + cd retinanet
 + Name your trained model "model_final.pt" and put it in retinanet
 + python Main.py
+
+## How to control
++ Press W key to move your mouse to the detect object on images
++ Press R key to move your mouse in FPS game(Since the mouse position will be at the middle of the screen)
 
 ## Open/Close the aiming system
 + Press "W" key to activate the aiming system, the mouse will move to the target automatically as long as there is any target on the screen
