@@ -1,5 +1,7 @@
 from ctypes import windll, c_long, c_ulong, Structure, Union, c_int, POINTER, sizeof, CDLL
 from os import path
+import win32api
+import win32con
 
 basedir = path.dirname(path.abspath(__file__))
 dlldir = path.join(basedir, 'ghub_mouse.dll')
@@ -54,9 +56,10 @@ def Mouse(flags, x=0, y=0, data=0):
 
 
 def mouse_xy(x, y):  # for import
-    if gmok:
-        return gm.moveR(x, y)
-    return SendInput(Mouse(0x0001, x, y))
+    # if gmok:
+      #   return gm.moveR(x, y)
+    # return SendInput(Mouse(0x0001, x, y))
+    return win32api.mouse_event(win32con.MOUSEEVENTF_MOVE,x , y)
 
 
 def mouse_down(key = 1):  # for import

@@ -7,29 +7,45 @@ from utils.FPSUtils import *
 import win32api
 import threading
 import utils.ghub_mouse as ghub
+import traceback
 
 VK_W = 0x57
+VK_R = 0x52
 
 pressed = False
 keyboard_terminate = threading.Event()
 btc = None
+target_pos = SCREEN_C
 
 def monitor_keyboard():
     global pressed
     global keyboard_terminate
     global btc
+    global target_pos
     while not keyboard_terminate.is_set():
         w_key_state = win32api.GetKeyState(VK_W)
+        r_key_state = win32api.GetKeyState(VK_R)
         pressed = w_key_state < 0
-        if btc is not None and w_key_state < 0:# if the left mouse button is pressed
-            print("Coordinate: ", int(LEFT + btc[0]), int(TOP + btc[1]))
+        if btc is not None and (w_key_state < 0 or r_key_state < 0):# if w key is pressed -> for image detection
+            # print("Coordinate: ", int(LEFT + btc[0]), int(TOP + btc[1]))
             # pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
             # windll.user32.SetCursorPos(int(LEFT + btc[0]), int(TOP + btc[1]))
-            ghub.mouse_xy(int(LEFT + btc[0]), int(TOP + btc[1]))
+            print("\ntarget pos", target_pos)
+            current_cursor_pos = win32api.GetCursorPos()
+            print("current cursor pos: ", current_cursor_pos)
+            move_vector = [target_pos[0] - current_cursor_pos[0], target_pos[1] - current_cursor_pos[1]]
+            print("move vector: ", move_vector)
+            ghub.mouse_xy(int(move_vector[0]/2.6), int(move_vector[1]/2.6))
+            print("current Pos after moving: ", win32api.GetCursorPos())
+            print("")
+            if r_key_state < 0:
+                target_pos = SCREEN_C
+            else:
+                target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
     print("keyboard interrupt in keyboard thread")
 
 def shoot_screen():
-    while True:
+    while True: 
         img = pyautogui.screenshot(region=[LEFT, TOP, 640, 640])  # take screenshot, input: (left, top, w, h)
         images_path = 'images/'
         img.save(
@@ -63,15 +79,17 @@ if __name__ == '__main__':
                 t = time.time()
                 print("Start finding")
                 btc, btp = FindBestCenter(detections)
+                if btc is not None:
+                    target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
                 print("End finding, it took " + str(time.time() - t) + "s")
 
                 print("----------------------\n")
-            except:
+            except Exception as e:
+                print('Error: ' + str(e))
+                traceback.print_exc()
                 break
-        raise
-    except Exception as e:
-        print('ERROR!')
-        print('Error: '+ str(e))
+        raise KeyboardInterrupt
+    except KeyboardInterrupt as e:
         keyboard_terminate.set()
         print("keyboard interrupt in main thread")
 
