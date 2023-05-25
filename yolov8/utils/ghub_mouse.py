@@ -61,7 +61,7 @@ def mouse_xy(x, y):  # for import
       #   return gm.moveR(x, y)
     # return SendInput(Mouse(0x0001, x, y))
     # return windll.user32.SetCursorPos(x, y)
-    return win32api.mouse_event(win32con.MOUSEEVENTF_MOVE,x , y)
+    return win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, x, y, 0, 0)
     # return win32api.mouse_event(win32con.MOUSEEVENTF_ABSOLUTE | win32con.MOUSEEVENTF_MOVE, x, y)
 
 

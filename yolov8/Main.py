@@ -15,13 +15,15 @@ VK_R = 0x52
 pressed = False
 keyboard_terminate = threading.Event()
 btc = None
-target_pos = SCREEN_C
+btp = None
+# target_pos = SCREEN_C
 
 def monitor_keyboard():
     global pressed
     global keyboard_terminate
     global btc
-    global target_pos
+    global btp
+    #　global target_pos
     while not keyboard_terminate.is_set():
         w_key_state = win32api.GetKeyState(VK_W)
         r_key_state = win32api.GetKeyState(VK_R)
@@ -30,12 +32,13 @@ def monitor_keyboard():
             # print("Coordinate: ", int(LEFT + btc[0]), int(TOP + btc[1]))
             # pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
             # windll.user32.SetCursorPos(int(LEFT + btc[0]), int(TOP + btc[1]))
-            print("\ntarget pos", target_pos)
-            current_cursor_pos = win32api.GetCursorPos()
-            print("current cursor pos: ", current_cursor_pos)
-            move_vector = [target_pos[0] - current_cursor_pos[0], target_pos[1] - current_cursor_pos[1]]
-            print("move vector: ", move_vector)
-            ghub.mouse_xy(int(move_vector[0]/2.6), int(move_vector[1]/2.6))
+            # print("\ntarget pos", target_pos)
+            # current_cursor_pos = win32api.GetCursorPos()
+            # print("current cursor pos: ", current_cursor_pos)
+            # move_vector = [target_pos[0] - current_cursor_pos[0], target_pos[1] - current_cursor_pos[1]]
+            # print("move vector: ", move_vector)
+            # ghub.mouse_xy(int(move_vector[0]/2.6), int(move_vector[1]/2.6))
+            ghub.mouse_xy(int(btc[0] - (SCREEN_W // 2)),int(btc[1] - (SCREEN_H - (btp[3] // 2))))
             print("current Pos after moving: ", win32api.GetCursorPos())
             print("")
             if r_key_state < 0:
@@ -79,8 +82,8 @@ if __name__ == '__main__':
                 t = time.time()
                 print("Start finding")
                 btc, btp = FindBestCenter(detections)
-                if btc is not None:
-                    target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
+                # if btc is not None:
+                  #   target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
                 print("End finding, it took " + str(time.time() - t) + "s")
 
                 print("----------------------\n")

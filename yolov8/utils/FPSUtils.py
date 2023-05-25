@@ -5,8 +5,8 @@ import pyautogui
 import numpy as np
 import dxcam
 
-SCREEN_W = 1920  # screen width
-SCREEN_H = 1080  # screen height
+SCREEN_W = 1920  # screen width, you need to modify this part to fit your own screen
+SCREEN_H = 1080  # screen height, you need to modify this part to fit your own screen
 SCREEN_CX = SCREEN_W // 2  # screen center x
 SCREEN_CY = SCREEN_H // 2  # screen center y
 SCREEN_C = [SCREEN_CX, SCREEN_CY]  # screen center position vector
