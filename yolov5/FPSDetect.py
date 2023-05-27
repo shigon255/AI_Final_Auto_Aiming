@@ -33,6 +33,8 @@ def detect(img0):
     :param img0: the image we want to detect
     :return: {'class': cls(classification), 'conf': conf(confidence), 'position': xywh(screen coordinate)}
     """
+    if img0 is None:
+        return None, None
     with torch.no_grad():
         # Padded resize
         img = letterbox(img0, img_size, stride=stride)[0]

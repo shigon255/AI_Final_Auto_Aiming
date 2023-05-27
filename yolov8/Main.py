@@ -65,57 +65,55 @@ if __name__ == '__main__':
     # keyboard_thread = threading.Thread(target=monitor_keyboard)
     # keyboard_thread.start()
     img = None
-    try:
-        while True:
-            try:
-                print("\n----------------------")
-                # Take screen shot
-                t = time.time()
-                print("Start taking screen shot")
-                img = ScreenShout() 
-                print("End taking screen shot, it took " + str(time.time()-t) + "s")
+    while True:
+        try:
+            print("\n----------------------")
+            # Take screen shot
+            t = time.time()
+            print("Start taking screen shot")
+            img = ScreenShout() 
+            print("End taking screen shot, it took " + str(time.time()-t) + "s")
 
-                time.sleep(0.001)
-                # Detection
-                t = time.time()
-                print("Start detection")
-                detections = detect(img)
-                print("End detection, it took " + str(time.time()-t) + "s")
-                print("detection: ")
-                print(detections)
+            # Detection
+            t = time.time()
+            print("Start detection")
+            detections = detect(img)
+            print("End detection, it took " + str(time.time()-t) + "s")
+            print("detection: ")
+            print(detections)
 
-                # Find center to move
-                t = time.time()
-                print("Start finding")
-                btc, btp = FindBestCenter(detections)
+            # Find center to move
+            t = time.time()
+            print("Start finding")
+            btc, btp = FindBestCenter(detections)
 
-                # if btc is not None:
-                  #   target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
-                print("End finding, it took " + str(time.time() - t) + "s")
+            # if btc is not None:
+                #   target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
+            print("End finding, it took " + str(time.time() - t) + "s")
 
-                w_key_state = win32api.GetKeyState(VK_W)
-                r_key_state = win32api.GetKeyState(VK_R)
-                
-                if btc is not None and (w_key_state < 0 or r_key_state < 0):
-                    print("Start moving mouse")
-                    if r_key_state < 0:
-                        ghub.mouse_xy(int(btc[0] - (SCREEN_W // 2)),int(btc[1] - (SCREEN_H - (btp[3] // 2))))
-                    else:
-                        pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
-                    print("End moving mouse")
-                print("----------------------\n")
-            except Exception as e:
-                print("error image: ", img)
-                print("error image shape: ", img.shape)
-                imgs = Image.fromarray(img)
-                imgs.save("Fault.jpg") 
-                print('Error: ' + str(e))
-                traceback.print_exc()
-                break
-        raise KeyboardInterrupt
-    except KeyboardInterrupt as e:
-        # keyboard_terminate.set()
-        print("keyboard interrupt in main thread")
-
-    # keyboard_thread.join()
+            w_key_state = win32api.GetKeyState(VK_W)
+            r_key_state = win32api.GetKeyState(VK_R)
+            
+            if btc is not None and (w_key_state < 0 or r_key_state < 0):
+                print("Start moving mouse")
+                if r_key_state < 0:
+                    ghub.mouse_xy(int(btc[0] - (SCREEN_W // 2)),int(btc[1] - (SCREEN_H - (btp[3] // 2))))
+                else:
+                    pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
+                print("End moving mouse")
+            print("----------------------\n")
+        except KeyboardInterrupt as e:
+            print("keyboard interrupt")
+            break
+        except IndexError as e:
+            print("Index error")
+            continue
+        except Exception as e:
+            print("error image: ", img)
+            print("error image shape: ", img.shape)
+            imgs = Image.fromarray(img)
+            imgs.save("Fault.jpg") 
+            print('Error: ' + str(e))
+            traceback.print_exc()
+            break
     print("program finish")
