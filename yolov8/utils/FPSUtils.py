@@ -4,6 +4,7 @@ import pyautogui
 
 import numpy as np
 import dxcam
+import cv2
 
 SCREEN_W = 1920  # screen width, you need to modify this part to fit your own screen
 SCREEN_H = 1080  # screen height, you need to modify this part to fit your own screen
