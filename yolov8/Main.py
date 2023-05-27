@@ -12,6 +12,7 @@ import traceback
 VK_W = 0x57
 VK_R = 0x52
 
+"""
 pressed = False
 keyboard_terminate = threading.Event()
 btc = None
@@ -27,7 +28,7 @@ def monitor_keyboard():
     while not keyboard_terminate.is_set():
         w_key_state = win32api.GetKeyState(VK_W)
         r_key_state = win32api.GetKeyState(VK_R)
-        pressed = w_key_state < 0
+        # pressed = w_key_state < 0
         if btc is not None and (w_key_state < 0 or r_key_state < 0):# if w key is pressed -> for image detection
             # print("Coordinate: ", int(LEFT + btc[0]), int(TOP + btc[1]))
             # pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
@@ -39,6 +40,8 @@ def monitor_keyboard():
             # print("move vector: ", move_vector)
             # ghub.mouse_xy(int(move_vector[0]/2.6), int(move_vector[1]/2.6))
             ghub.mouse_xy(int(btc[0] - (SCREEN_W // 2)),int(btc[1] - (SCREEN_H - (btp[3] // 2))))
+            btc = None
+            btp = None
             print("current Pos after moving: ", win32api.GetCursorPos())
             print("")
             if r_key_state < 0:
@@ -46,7 +49,7 @@ def monitor_keyboard():
             else:
                 target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
     print("keyboard interrupt in keyboard thread")
-
+"""
 def shoot_screen():
     while True: 
         img = pyautogui.screenshot(region=[LEFT, TOP, 640, 640])  # take screenshot, input: (left, top, w, h)
@@ -58,8 +61,8 @@ def shoot_screen():
 
 if __name__ == '__main__':
     print("Initialize")
-    keyboard_thread = threading.Thread(target=monitor_keyboard)
-    keyboard_thread.start()
+    # keyboard_thread = threading.Thread(target=monitor_keyboard)
+    # keyboard_thread.start()
     try:
         while True:
             try:
@@ -86,6 +89,11 @@ if __name__ == '__main__':
                   #   target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
                 print("End finding, it took " + str(time.time() - t) + "s")
 
+                if btc is not None:
+                    print("Start moving mouse")
+                    # ghub.mouse_xy(int(btc[0] - (SCREEN_W // 2)),int(btc[1] - (SCREEN_H - (btp[3] // 2))))
+                    pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
+                    print("End moving mouse")
                 print("----------------------\n")
             except Exception as e:
                 print('Error: ' + str(e))
@@ -93,8 +101,8 @@ if __name__ == '__main__':
                 break
         raise KeyboardInterrupt
     except KeyboardInterrupt as e:
-        keyboard_terminate.set()
+        # keyboard_terminate.set()
         print("keyboard interrupt in main thread")
 
-    keyboard_thread.join()
+    # keyboard_thread.join()
     print("program finish")
