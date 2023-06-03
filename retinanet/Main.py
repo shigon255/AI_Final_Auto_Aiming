@@ -8,10 +8,12 @@ import win32api
 import threading
 import utils.ghub_mouse as ghub
 import traceback
+from PIL import Image
 
 VK_W = 0x57
 VK_R = 0x52
 
+"""
 pressed = False
 keyboard_terminate = threading.Event()
 btc = None
@@ -41,7 +43,7 @@ def monitor_keyboard():
             if r_key_state < 0:
                 target_pos = SCREEN_C
     print("keyboard interrupt in keyboard thread")
-
+"""
 
 def shoot_screen():
     while True:
@@ -55,48 +57,62 @@ def shoot_screen():
 
 if __name__ == "__main__":
     print("Initialize")
-    keyboard_thread = threading.Thread(target=monitor_keyboard)
-    keyboard_thread.start()
+    # keyboard_thread = threading.Thread(target=monitor_keyboard)
+    # keyboard_thread.start()
     try:
         init()
     except Exception as e:
         print("Initialization error!")
         print("Error: "+str(e))
-    try:
-        while True:
-            try:
-                print("\n----------------------")
-                # Take screen shot
-                t = time.time()
-                print("Start taking screen shot")
-                img = ScreenShout() 
-                print("End taking screen shot, it took " + str(time.time()-t) + "s")
+    img = None
+    while True:
+        try:
+            print("\n----------------------")
+            # Take screen shot
+            t = time.time()
+            print("Start taking screen shot")
+            img = ScreenShout() 
+            print("End taking screen shot, it took " + str(time.time()-t) + "s")
 
-                # Detection
-                t = time.time()
-                print("Start detection")
-                detections = detect(img)
-                print("End detection, it took " + str(time.time()-t) + "s")
-                print("detection: ")
-                print(detections)
+            # Detection
+            t = time.time()
+            print("Start detection")
+            detections = detect(img)
+            print("End detection, it took " + str(time.time()-t) + "s")
+            print("detection: ")
+            print(detections)
 
-                # Find center to move
-                t = time.time()
-                print("Start finding")
-                btc, btp = FindBestCenter(detections)
-                if btc is not None:
-                    target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
-                print("End finding, it took " + str(time.time() - t) + "s")
+            # Find center to move
+            t = time.time()
+            print("Start finding")
+            btc, btp = FindBestCenter(detections)
+            # if btc is not None:
+                # target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
+            print("End finding, it took " + str(time.time() - t) + "s")
 
-                print("----------------------\n")
-            except Exception:
-                print('Error: ' + str(e))
-                traceback.print_exc()
-                break
-        raise KeyboardInterrupt
-    except Exception as e:
-        keyboard_terminate.set()
-        print("keyboard interrupt in main thread")
+            w_key_state = win32api.GetKeyState(VK_W)
+            r_key_state = win32api.GetKeyState(VK_R)
 
-    keyboard_thread.join()
+            if btc is not None and (w_key_state < 0 or r_key_state < 0):
+                print("Start moving mouse")
+                if r_key_state < 0:
+                    ghub.mouse_xy(int(btc[0] - (SCREEN_W // 2)),int(btc[1] - (SCREEN_H - (btp[3] // 2))))
+                else:
+                    pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
+                print("End moving mouse")
+            print("----------------------\n")
+        except KeyboardInterrupt as e:
+            print("keyboard interrupt")
+            break
+        except IndexError as e:
+            print("Index error")
+            continue
+        except Exception as e:
+            print("error image: ", img)
+            print("error image shape: ", img.shape)
+            imgs = Image.fromarray(img)
+            imgs.save("Fault.jpg") 
+            print('Error: ' + str(e))
+            traceback.print_exc()
+            break
     print("program finish")
