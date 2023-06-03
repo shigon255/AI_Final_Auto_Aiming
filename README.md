@@ -1,7 +1,11 @@
 # AI_Final_Auto_Aiming
-+ This is the repo of our final project. The aim of this project is to test different model's performance on auto aiming in FPS game
++ This is the repo of our final project. The aim of this project is to test different model's performance on auto aiming in FPS game.
++ We choose to train models that can be used in game "Apex legend".
++ We try 3 different models: [yolov5](https://github.com/ultralytics/yolov5), [yolov8](https://github.com/ultralytics/ultralytics) and retinanet.
++ The implementation of retinanet on pytorch is from [this project](https://github.com/yhenon/pytorch-retinanet)
 + The Auto aiming part is from [this project](https://github.com/chaoyu1999/FPSAutomaticAiming)
 + We trained our models by [this dataset](https://github.com/goldjee/AL-YOLO-dataset)
++ This project is only for education and research purpose. Using this project in real game might make your account be banned. Please take your own risk.
 
 
 # Usage
