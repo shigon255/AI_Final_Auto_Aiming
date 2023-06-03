@@ -1,6 +1,7 @@
 # AI_Final_Auto_Aiming
 + This is the repo of our final project. The aim of this project is to test different model's performance on auto aiming in FPS game
 + The Auto aiming part is from [this project](https://github.com/chaoyu1999/FPSAutomaticAiming)
++ We trained our models by [this dataset](https://github.com/goldjee/AL-YOLO-dataset)
 
 
 # Usage
@@ -19,12 +20,16 @@
 + python Main.py
 
 ## How to control
-+ Press W key to move your mouse to the detect object on images
-+ Press R key to move your mouse in FPS game(Since the mouse position will be at the middle of the screen)
-+ Press Ctrl + C to terminate the program
++ Press W key, your mouse will move to the detect object on images automatically.
++ Press R key, your mouse in FPS game(Since the mouse position will be at the middle of the screen) automatically.
++ Press Ctrl + C to terminate the program.
 
+## Models
++ Currently, models of yolov5 and yolov8 by different training hyper parameters is available in "models" directory
++ For yolov5 and yolov8, you can use default model that is already in each directories, or you can choose different models from "models" or models trained by yourself. Just replace "best.pt" in the yolov5 and yolov8 directory with the model you want.
++ For retinanet, unfortunately,  the size of model is too large to upload to github repo. We provide a [link](https://drive.google.com/drive/folders/19SnXHvO3bah2VFTYwys-7Q9WShWE9VTo?usp=sharing) to google drive that contain every models we train, including retinanet models. You can replace "model_final.pt" in retinanet directory with the model you want.
 
-## Current model's training hyper parameter
-+ yolov5: yolov5s, epoch 50, batch size 16
-+ yolov8: yolov8n, epoch 100, batch size 16
-+ retinanet: Need to download/train by yourself(Since it's too big to upload to github)
+## Training hyper parameters of default model
++ yolov5: yolov5s, epoch 50, batch size 16.
++ yolov8: yolov8n, epoch 100, batch size 16.
++ retinanet: No default model, need to download/train by yourself.
