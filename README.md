@@ -37,7 +37,7 @@
 + For retinanet, unfortunately,  the size of model is too large to upload to github repo. We provide a [link](https://drive.google.com/drive/folders/19SnXHvO3bah2VFTYwys-7Q9WShWE9VTo?usp=sharing) to google drive that contain every models we train, including retinanet models. You can replace "model_final.pt" in retinanet directory with the model you want. 
   + Please use NYCU account to view the link.
 
-## Training hyper parameters of default model
+## Training hyper parameters of default models
 + yolov5: yolov5s, epoch 50, batch size 16.
 + yolov8: yolov8n, epoch 100, batch size 16.
 + retinanet: No default model, need to download/train by yourself.
