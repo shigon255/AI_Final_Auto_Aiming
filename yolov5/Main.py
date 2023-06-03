@@ -24,7 +24,7 @@ def monitor_keyboard():
     global keyboard_terminate
     global btc
     global btp
-    #　global target_pos
+    # global target_pos
     while not keyboard_terminate.is_set():
         w_key_state = win32api.GetKeyState(VK_W)
         r_key_state = win32api.GetKeyState(VK_R)

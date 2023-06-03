@@ -19,7 +19,7 @@ def detect(img0):
     :param img0: the image we want to detect
     :return: {'class': cls(classification), 'conf': conf(confidence), 'position': xywh(screen coordinate)}
     """
-    print("detect image: ", img0)
+    # print("detect image: ", img0)
     if img0 is None:
         return []
     detections = []

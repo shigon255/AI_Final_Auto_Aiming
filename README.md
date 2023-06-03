@@ -4,7 +4,7 @@
 
 
 # Usage
-## Setup & Activate the program
+## Setup & Execute the program
 ### yolov5 & yolov8
 + build environment from yolo_environment.yml
 + clone the repo
