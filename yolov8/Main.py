@@ -97,8 +97,10 @@ if __name__ == '__main__':
             if btc is not None and (w_key_state < 0 or r_key_state < 0):
                 print("Start moving mouse")
                 if r_key_state < 0:
+                    print("test r")
                     ghub.mouse_xy(int(btc[0] - (SCREEN_W // 2)),int(btc[1] - (SCREEN_H - (btp[3] // 2))))
                 else:
+                    print("test w")
                     pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
                 print("End moving mouse")
             print("----------------------\n")

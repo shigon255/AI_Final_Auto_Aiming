@@ -37,20 +37,20 @@ def detect(img0):
         probs = result.probs
         names = result.names
 
-        print("test 1")
+        # print("test 1")
         for j in range(len(boxes)):
             xywh = xywhs[j].tolist()
-            print("test 2")
+            # print("test 2")
             xywh = [round(x) for x in xywh]
-            print("test 3")
+            # print("test 3")
             xywh = [xywh[0] - xywh[2] // 2, xywh[1] - xywh[3] // 2, xywh[2],
                     xywh[3]]  # detect target's position，format：（left，top，w，h）
-            print("test 4")
+            # print("test 4")
             cls = names[int(clss[j])]
-            print("test 5")
+            # print("test 5")
             conf = float(confs[j])
-            print("test 6")
+            # print("test 6")
             detections.append({'class': cls, 'conf': conf, 'position': xywh})
-            print("test 7")
+            # print("test 7")
         
     return detections

@@ -10,8 +10,10 @@ SCREEN_H = 1080  # screen height
 SCREEN_CX = SCREEN_W // 2  # screen center x
 SCREEN_CY = SCREEN_H // 2  # screen center y
 SCREEN_C = [SCREEN_CX, SCREEN_CY]  # screen center position vector
-SCREENSHOT_W = 640  # screenshot width
-SCREENSHOT_H = 640  # screenshot height
+# SCREENSHOT_W = 640  # screenshot width
+# SCREENSHOT_H = 640  # screenshot height
+SCREENSHOT_W = SCREEN_W
+SCREENSHOT_H = SCREEN_H
 LEFT = SCREEN_CX - SCREENSHOT_W // 2  # top left corner of detecting frame.x
 TOP = SCREEN_CY - SCREENSHOT_H // 2  # top left corner of detecting frame.y
 
@@ -53,10 +55,10 @@ def FindBestCenter(detections):
     for dt in detections:
         
         # choose the nearest person
-        # from the boxes whose score > 0.8  (note that we assume that score is normalized to [0, 1], I'm not sure whether it's right or not)
+        # from the boxes whose score > 0.4  (note that we assume that score is normalized to [0, 1], I'm not sure whether it's right or not)
         print("Current box: ")
         print(dt)
-        if dt['score'] > 0.80:  
+        if dt['score'] > 0.40:  
             dt_p = dt['position']  
             dt_c = Center(dt_p)  # w,h
 

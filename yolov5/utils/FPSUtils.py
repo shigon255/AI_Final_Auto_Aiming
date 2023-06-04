@@ -10,8 +10,10 @@ SCREEN_H = 1080  # screen height
 SCREEN_CX = SCREEN_W // 2  # screen center x
 SCREEN_CY = SCREEN_H // 2  # screen center y
 SCREEN_C = [SCREEN_CX, SCREEN_CY]  # screen center position vector
-SCREENSHOT_W = 640  # screenshot width
-SCREENSHOT_H = 640  # screenshot height
+# SCREENSHOT_W = 640  # screenshot width
+# SCREENSHOT_H = 640  # screenshot height
+SCREENSHOT_W = SCREEN_W
+SCREENSHOT_H = SCREEN_H
 LEFT = SCREEN_CX - SCREENSHOT_W // 2  # top left corner of detecting frame.x
 TOP = SCREEN_CY - SCREENSHOT_H // 2  # top left corner of detecting frame.y
 
@@ -55,8 +57,8 @@ def FindBestCenter(detections):
     for dt in detections:
 
         # choose the nearest person (and head, for yolov5s_csgo.pt)
-        # from the boxes whose confidence > 0.8 
-        if dt['conf'] > 0.80:  
+        # from the boxes whose confidence > 0.4 
+        if dt['conf'] > 0.40:  
             dt_p = dt['position']  
             dt_c = Center(dt_p)  # w,h
 
