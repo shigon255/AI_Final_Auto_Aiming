@@ -25,6 +25,7 @@
 
 ### Setting
 + Some parameters(Screen size, ...) should be modified to fit your own device. You can modify them in utils/FPSUtils.py in each directories.
++ There're also some parameter that might affect the accuracy of the system. Detail of parameters will be described below.
 
 ## How to control
 + Press W key, your mouse will move to the detected object on images automatically.
@@ -37,7 +38,26 @@
 + For retinanet, unfortunately,  the size of model is too large to upload to github repo. We provide a [link](https://drive.google.com/drive/folders/19SnXHvO3bah2VFTYwys-7Q9WShWE9VTo?usp=sharing) to google drive that contain every models we train, including retinanet models. You can replace "model_final.pt" in retinanet directory with the model you want. 
   + Please use NYCU account to view the link.
 
-## Training hyper parameters of default models
+## Parameters
+
+### Training hyper parameters of default models
 + yolov5: yolov5s, epoch 50, batch size 16.
 + yolov8: yolov8n, epoch 100, batch size 16.
 + retinanet: No default model, need to download/train by yourself.
+
+### Model prediction parameters
++ These parameters can be modified in FPSDetect.py.
++ confidence threshold: 0.25
+  + Only object that is detected with confidence higher will be selected as candidates.
++ iou: 0.45
+
+### Aiming system parameters
++ Most of the parameters can be modified in utils/FPSUtils.py.
++ Screen parameters
+  + Screen width: 1920
+  + Screen height: 1080
+  + Screenshot size: same as screen size
++ Detection parameters
+  + confidence: threshold: 0.4
+    + Objects detected with confidence higher than 0.4 from candadiates obtained in prediction will be selected.
+    + Among these selected objects, object that the nearest from the screen center will be choosed as the best object to move to.
