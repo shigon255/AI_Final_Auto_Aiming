@@ -8,8 +8,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 # choose device
-device = torch.device('cpu')  # 'cuda' if torch.cuda.is_available() else 'cpu')
-half = device.type != 'cpu'
+print(torch.cuda.is_available())
 # Load model
 model_name = r'best.pt'
 model = YOLO(model_name)
@@ -19,13 +18,12 @@ def detect(img0):
     :param img0: the image we want to detect
     :return: {'class': cls(classification), 'conf': conf(confidence), 'position': xywh(screen coordinate)}
     """
-    # print("detect image: ", img0)
     if img0 is None:
         return []
     detections = []
     conf = 0.25
     iou = 0.45
-    results = model.predict(img0, device=device, conf=conf, iou=iou)
+    results = model.predict(img0, conf=conf, iou=iou,half = True)
     for i in range(len(results)):
         print("Box " + str(i))
         result = results[i]
@@ -37,20 +35,13 @@ def detect(img0):
         probs = result.probs
         names = result.names
 
-        # print("test 1")
         for j in range(len(boxes)):
             xywh = xywhs[j].tolist()
-            # print("test 2")
-            xywh = [round(x) for x in xywh]
-            # print("test 3")
+            xywh = [round(x) for x in xywh]            
             xywh = [xywh[0] - xywh[2] // 2, xywh[1] - xywh[3] // 2, xywh[2],
                     xywh[3]]  # detect target's position，format：（left，top，w，h）
-            # print("test 4")
             cls = names[int(clss[j])]
-            # print("test 5")
             conf = float(confs[j])
-            # print("test 6")
             detections.append({'class': cls, 'conf': conf, 'position': xywh})
-            # print("test 7")
         
     return detections

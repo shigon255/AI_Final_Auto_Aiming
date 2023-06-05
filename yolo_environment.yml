@@ -39,6 +39,7 @@ dependencies:
       - pyautogui==0.9.53
       - pygetwindow==0.0.9
       - pymsgbox==1.0.9
+      - pynput==1.7.6
       - pyparsing==3.0.9
       - pyperclip==1.8.2
       - pyrect==0.2.0
