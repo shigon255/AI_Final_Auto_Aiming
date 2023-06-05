@@ -55,10 +55,10 @@ def FindBestCenter(detections):
     for dt in detections:
         
         # choose the nearest person
-        # from the boxes whose score > 0.4  (note that we assume that score is normalized to [0, 1], I'm not sure whether it's right or not)
+        # from the boxes whose score > 0.25  (note that we assume that score is normalized to [0, 1], I'm not sure whether it's right or not)
         print("Current box: ")
         print(dt)
-        if dt['score'] > 0.40:  
+        if dt['score'] > 0.25:  
             dt_p = dt['position']  
             dt_c = Center(dt_p)  # w,h
 

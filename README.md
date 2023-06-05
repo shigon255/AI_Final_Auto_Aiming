@@ -58,6 +58,6 @@
   + Screen height: 1080
   + Screenshot size: same as screen size
 + Detection parameters
-  + confidence: threshold: 0.4
-    + Objects detected with confidence higher than 0.4 from candadiates obtained in prediction will be selected.
+  + confidence: threshold: 0.25
+    + Objects detected with confidence higher than this threshold from candadiates obtained in prediction will be selected.
     + Among these selected objects, object that the nearest from the screen center will be choosed as the best object to move to.
