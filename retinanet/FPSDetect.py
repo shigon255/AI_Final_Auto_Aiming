@@ -39,8 +39,8 @@ def init():
     model = torch.load(model_path)
 
     if torch.cuda.is_available():
-        model = model.cuda()
         model.half()
+        model = model.cuda()
 
     model.training = False
     model.eval()
@@ -94,6 +94,7 @@ def detect(img0):
         image = torch.from_numpy(image)
         if torch.cuda.is_available():
             image = image.cuda()
+            image = image.half()
 
         print(image.shape, image_orig.shape, scale)
         scores, classification, transformed_anchors = model(image.cuda().float())
