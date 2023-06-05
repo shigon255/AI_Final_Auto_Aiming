@@ -97,7 +97,10 @@ def detect(img0):
             image = image.half()
 
         print(image.shape, image_orig.shape, scale)
-        scores, classification, transformed_anchors = model(image.cuda().float())
+        if torch.cuda.is_available():
+            scores, classification, transformed_anchors = model(image)
+        else:
+            scores, classification, transformed_anchors = model(image.cuda().float())
         # for debug
         print("scores: ", scores) # save the stores of each box
         print("classification: ", classification) # save the labels of each box
