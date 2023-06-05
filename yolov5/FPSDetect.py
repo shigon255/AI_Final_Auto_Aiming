@@ -14,7 +14,8 @@ half = device.type != 'cpu'
 # model_name = r'yolov5s_csgo.pt' # model from FPSAutomaticAiming
 model_name = r'best.pt' # the model we trained 
 # model_name = r'yolov5s_pretrained.pt' # yolov5 official pretrained model
-model = attempt_load(model_name, device=device)  # load FP32 model
+# model = attempt_load(model_name, device=device)  # load FP32 model
+model = attempt_load(model_name)
 stride = int(model.stride.max())  # model stride
 img_size = check_img_size(640, s=stride)  # check img_size
 if half:

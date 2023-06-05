@@ -2,11 +2,6 @@ import numpy as np
 import torch
 import csv
 import cv2
-# from ultralytics import YOLO
-# from models.experimental import attempt_load
-# from utils.datasets import letterbox
-# from utils.general import check_img_size, non_max_suppression, scale_coords, xyxy2xywh
-# import warnings
 
 # from visualize_single_image.py
 def load_classes(csv_reader):

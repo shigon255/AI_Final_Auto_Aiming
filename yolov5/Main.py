@@ -1,6 +1,6 @@
 import random
 import time
-
+from threading import Thread
 from FPSDetect import *
 from ctypes import *
 from utils.FPSUtils import *
@@ -8,48 +8,26 @@ import win32api
 import threading
 import utils.ghub_mouse as ghub
 import traceback
-
-VK_W = 0x57
+from PIL import Image
+import pynput
+from MyListener import listen_key, listen_mouse, get_S_L, Mouse_redirection, Move_Mouse
+VK_W = 0x06
 VK_R = 0x52
 
-"""
-pressed = False
-keyboard_terminate = threading.Event()
-btc = None
-btp = None
-# target_pos = SCREEN_C
+lock_mode = False
+lock_button = eval('pynput.mouse.Button.' + 'x2')
+# Start listen the right mouse button and the esc
 
-def monitor_keyboard():
-    global pressed
-    global keyboard_terminate
-    global btc
-    global btp
-    # global target_pos
-    while not keyboard_terminate.is_set():
-        w_key_state = win32api.GetKeyState(VK_W)
-        r_key_state = win32api.GetKeyState(VK_R)
-        # pressed = w_key_state < 0
-        if btc is not None and (w_key_state < 0 or r_key_state < 0):# if w key is pressed -> for image detection
-            # print("Coordinate: ", int(LEFT + btc[0]), int(TOP + btc[1]))
-            # pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
-            # windll.user32.SetCursorPos(int(LEFT + btc[0]), int(TOP + btc[1]))
-            # print("\ntarget pos", target_pos)
-            # current_cursor_pos = win32api.GetCursorPos()
-            # print("current cursor pos: ", current_cursor_pos)
-            # move_vector = [target_pos[0] - current_cursor_pos[0], target_pos[1] - current_cursor_pos[1]]
-            # print("move vector: ", move_vector)
-            # ghub.mouse_xy(int(move_vector[0]/2.6), int(move_vector[1]/2.6))
-            ghub.mouse_xy(int(btc[0] - (SCREEN_W // 2)),int(btc[1] - (SCREEN_H - (btp[3] // 2))))
-            btc = None
-            btp = None
-            print("current Pos after moving: ", win32api.GetCursorPos())
-            print("")
-            if r_key_state < 0:
-                target_pos = SCREEN_C
-            else:
-                target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
-    print("keyboard interrupt in keyboard thread")
-"""
+def on_click(x,y,button,is_press):
+    global lock_mode
+    if button == lock_button:
+        if is_press:
+            lock_mode = True
+            print("lock")
+        else:
+            lock_mode = False
+            print("lock off")
+
 def shoot_screen():
     while True: 
         img = pyautogui.screenshot(region=[LEFT, TOP, 640, 640])  # take screenshot, input: (left, top, w, h)
@@ -58,55 +36,68 @@ def shoot_screen():
             images_path + str(int(time.time())) + ''.join(
                 random.sample('zyxwvutsrqponmlkjihgfedcba', 2)) + '.jpg')  # generate file name randomly
         time.sleep(0.5)
-
+def listeners():
+    listener = pynput.mouse.Listener(on_click=on_click)
+    listener.start()
+    print("listening")
+    listener.join()
 if __name__ == '__main__':
     print("Initialize")
     # keyboard_thread = threading.Thread(target=monitor_keyboard)
     # keyboard_thread.start()
-    try:
-        while True:
-            try:
-                print("\n----------------------")
-                # Take screen shot
-                t = time.time()
-                print("Start taking screen shot")
-                img = ScreenShout() 
-                print("End taking screen shot, it took " + str(time.time()-t) + "s")
+    img = None
+    process1 = Thread(
+        target=listeners,
+    )
+    process1.start()
+    while True:
+        try:
+            Start_detection, Listen = get_S_L()
+            print("\n----------------------")
+            # Take screen shot
+            t = time.time()
+            print("Start taking screen shot")
+            img = ScreenShout() 
+            print("End taking screen shot, it took " + str(time.time()-t) + "s")
 
-                # Detection
-                t = time.time()
-                print("Start detection")
-                detections = detect(img)
-                print("End detection, it took " + str(time.time()-t) + "s")
-                print("detection: ")
-                print(detections)
+            # Detection
+            t = time.time()
+            print("Start detection")
+            detections = detect(img)
+            print("End detection, it took " + str(time.time()-t) + "s")
+            print("detection: ")
+            print(detections)
 
-                # Find center to move
-                t = time.time()
-                print("Start finding")
-                btc, btp = FindBestCenter(detections)
-                # if btc is not None:
-                  #   target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
-                print("End finding, it took " + str(time.time() - t) + "s")
+            # Find center to move
+            t = time.time()
+            print("Start finding")
+            btc, btp = FindBestCenter(detections)
 
-                w_key_state = win32api.GetKeyState(VK_W)
-                r_key_state = win32api.GetKeyState(VK_R)
-                if btc is not None and (w_key_state < 0 or r_key_state < 0):
-                    print("Start moving mouse")
-                    if r_key_state < 0:
-                        ghub.mouse_xy(int(btc[0] - (SCREEN_W // 2)),int(btc[1] - (SCREEN_H - (btp[3] // 2))))
-                    else:
-                        pyautogui.moveTo(int(LEFT + btc[0]), int(TOP + btc[1]))
-                    print("End moving mouse")
-                print("----------------------\n")
-            except Exception as e:
-                print('Error: ' + str(e))
-                traceback.print_exc()
-                break
-        raise KeyboardInterrupt
-    except KeyboardInterrupt as e:
-        # keyboard_terminate.set()
-        print("keyboard interrupt in main thread")
+            # if btc is not None:
+                #   target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
+            print("End finding, it took " + str(time.time() - t) + "s")
 
-    # keyboard_thread.join()
+            w_key_state = win32api.GetKeyState(VK_W)
+            r_key_state = win32api.GetKeyState(VK_R)
+        
+            if btc is not None and lock_mode:
+                print("Start moving mouse")
+                mouse_x,mouse_y = pyautogui.position()
+                windll.user32.mouse_event(c_uint(0x0001),c_uint(LEFT+btc[0]-mouse_x),c_uint(TOP+btc[1]-mouse_y),c_uint(0x0001),c_uint(0x0001))
+
+            print("----------------------\n")
+        except KeyboardInterrupt as e:
+            print("keyboard interrupt")
+            break
+        except IndexError as e:
+            print("Index error")
+            continue
+        except Exception as e:
+            print("error image: ", img)
+            print("error image shape: ", img.shape)
+            imgs = Image.fromarray(img)
+            imgs.save("Fault.jpg") 
+            print('Error: ' + str(e))
+            traceback.print_exc()
+            break
     print("program finish")
