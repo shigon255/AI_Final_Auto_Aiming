@@ -40,6 +40,7 @@ def init():
 
     if torch.cuda.is_available():
         model = model.cuda()
+        model.half()
 
     model.training = False
     model.eval()
