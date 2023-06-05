@@ -43,6 +43,12 @@ def listeners():
     listener.join()
 if __name__ == '__main__':
     print("Initialize")
+    try:
+        init()
+    except Exception as e:
+        print("Initialization error!")
+        print("Error: " + str(e))
+        traceback.print_exc()
     # keyboard_thread = threading.Thread(target=monitor_keyboard)
     # keyboard_thread.start()
     img = None
