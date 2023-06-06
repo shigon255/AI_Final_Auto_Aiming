@@ -37,6 +37,9 @@ def shoot_screen():
                 random.sample('zyxwvutsrqponmlkjihgfedcba', 2)) + '.jpg')  # generate file name randomly
         time.sleep(0.5)
 """
+count = 0
+fps_record_count = 0
+average_fps = 0
 def listeners():
     listener = pynput.mouse.Listener(on_click=on_click)
     listener.start()
@@ -55,6 +58,7 @@ if __name__ == '__main__':
         target=listeners,
     )
     process1.start()
+    time_start = time.time()
     while True:
         try:
             # Start_detection, Listen = get_S_L()
@@ -87,7 +91,20 @@ if __name__ == '__main__':
                 print("Start moving mouse")
                 mouse_x,mouse_y = pyautogui.position()
                 windll.user32.mouse_event(c_uint(0x0001),c_uint(LEFT+btc[0]-mouse_x),c_uint(TOP+btc[1]-mouse_y),c_uint(0x0001),c_uint(0x0001))
+            count+=1
 
+            if(count%100==0):        
+                time_per_100frame = time.time() - time_start
+                time_start = time.time()
+                fps = count/time_per_100frame
+                print("fps: ", fps)
+                interval=time_per_100frame/count
+                print("interval: ",interval)
+                count=0
+
+                fps_record_count += 1
+                average_fps = average_fps * ((fps_record_count-1)/ fps_record_count) + fps / fps_record_count
+                print("Average fps: ", average_fps)
             print("----------------------\n")
         except KeyboardInterrupt as e:
             print("keyboard interrupt")
@@ -103,5 +120,6 @@ if __name__ == '__main__':
             print('Error: ' + str(e))
             traceback.print_exc()
             break
+    print("Average fps: ", average_fps)
     print("program finish")
 
