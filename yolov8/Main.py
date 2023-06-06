@@ -11,8 +11,8 @@ import traceback
 from PIL import Image
 import pynput
 from MyListener import listen_key, listen_mouse, get_S_L, Mouse_redirection, Move_Mouse
-VK_W = 0x06
-VK_R = 0x52
+# VK_W = 0x06
+# VK_R = 0x52
 
 lock_mode = False
 lock_button = eval('pynput.mouse.Button.' + 'x2')
@@ -28,6 +28,7 @@ def on_click(x,y,button,is_press):
             lock_mode = False
             print("lock off")
 
+"""
 def shoot_screen():
     while True: 
         img = pyautogui.screenshot(region=[LEFT, TOP, 640, 640])  # take screenshot, input: (left, top, w, h)
@@ -36,11 +37,14 @@ def shoot_screen():
             images_path + str(int(time.time())) + ''.join(
                 random.sample('zyxwvutsrqponmlkjihgfedcba', 2)) + '.jpg')  # generate file name randomly
         time.sleep(0.5)
+"""
+
 def listeners():
     listener = pynput.mouse.Listener(on_click=on_click)
     listener.start()
     print("listening")
     listener.join()
+
 if __name__ == '__main__':
     print("Initialize")
     try:
@@ -49,8 +53,6 @@ if __name__ == '__main__':
         print("Initialization error!")
         print("Error: " + str(e))
         traceback.print_exc()
-    # keyboard_thread = threading.Thread(target=monitor_keyboard)
-    # keyboard_thread.start()
     img = None
     process1 = Thread(
         target=listeners,
@@ -74,17 +76,15 @@ if __name__ == '__main__':
             print("detection: ")
             print(detections)
 
-            # Find center to move
+            # Find best target center(btc) to move
             t = time.time()
             print("Start finding")
             btc, btp = FindBestCenter(detections)
 
-            # if btc is not None:
-                #   target_pos = int(LEFT + btc[0]), int(TOP + btc[1])
             print("End finding, it took " + str(time.time() - t) + "s")
 
-            w_key_state = win32api.GetKeyState(VK_W)
-            r_key_state = win32api.GetKeyState(VK_R)
+            # w_key_state = win32api.GetKeyState(VK_W)
+            # r_key_state = win32api.GetKeyState(VK_R)
         
             if btc is not None and lock_mode:
                 print("Start moving mouse")

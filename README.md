@@ -61,3 +61,11 @@
   + confidence: threshold: 0.25
     + Objects detected with confidence higher than this threshold from candadiates obtained in prediction will be selected.
     + Among these selected objects, object that the nearest from the screen center will be choosed as the best object to move to.
+
+## TODO
++ Delete Keyboard instruction
++ Parameters update
++ Reference update
+  + yolov8 apex assist
+  + TensorRT
++ Model analysis
