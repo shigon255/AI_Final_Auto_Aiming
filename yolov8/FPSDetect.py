@@ -24,7 +24,7 @@ warnings.filterwarnings("ignore")
 # choose device
 print(torch.cuda.is_available())
 # Load model
-model_name = r'best.pt'
+model_name = r'best.pt' # change to the name of the model you want to use
 model = None
 
 def init():
