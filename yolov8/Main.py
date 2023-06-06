@@ -85,7 +85,8 @@ if __name__ == '__main__':
 
             # w_key_state = win32api.GetKeyState(VK_W)
             # r_key_state = win32api.GetKeyState(VK_R)
-        
+
+            print("lockmode: ", lock_mode)
             if btc is not None and lock_mode:
                 print("Start moving mouse")
                 mouse_x,mouse_y = pyautogui.position()
