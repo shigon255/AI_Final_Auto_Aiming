@@ -10,7 +10,7 @@ import utils.ghub_mouse as ghub
 import traceback
 from PIL import Image
 import pynput
-from MyListener import listen_key, listen_mouse, get_S_L, Mouse_redirection, Move_Mouse
+# from MyListener import listen_key, listen_mouse, get_S_L, Mouse_redirection, Move_Mouse
 # VK_W = 0x06
 # VK_R = 0x52
 
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     process1.start()
     while True:
         try:
-            Start_detection, Listen = get_S_L()
+            # Start_detection, Listen = get_S_L()
             print("\n----------------------")
             # Take screen shot
             t = time.time()
