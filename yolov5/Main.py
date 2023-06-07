@@ -47,6 +47,9 @@ def listeners():
 count = 0
 fps_record_count = 0
 average_fps = 0
+predict_record_count = 0
+predict_time_100 = 0
+average_predict_time =  0
 if __name__ == '__main__':
     print("Initialize")
     # keyboard_thread = threading.Thread(target=monitor_keyboard)
@@ -70,8 +73,10 @@ if __name__ == '__main__':
             # Detection
             t = time.time()
             print("Start detection")
-            detections = detect(img)
+            detections, predict_time = detect(img)
+            predict_time_100 += predict_time
             print("End detection, it took " + str(time.time()-t) + "s")
+            print("Prediction took " + str(predict_time) + "s")
             print("detection: ")
             print(detections)
 
@@ -103,6 +108,11 @@ if __name__ == '__main__':
                 fps_record_count += 1
                 average_fps = average_fps * ((fps_record_count-1)/ fps_record_count) + fps / fps_record_count
                 print("Average fps: ", average_fps)
+
+                predict_record_count += 1
+                average_predict_time = average_predict_time * ((predict_record_count-1) / predict_record_count) + (predict_time_100 / 100)/predict_record_count
+                predict_time_100 = 0
+                print("Average predict time: ", average_predict_time)
             print("----------------------\n")
         except KeyboardInterrupt as e:
             print("keyboard interrupt")
@@ -119,4 +129,5 @@ if __name__ == '__main__':
             traceback.print_exc()
             break
     print("Average fps: ", average_fps)
+    print("Average predict time: ", average_predict_time)
     print("program finish")

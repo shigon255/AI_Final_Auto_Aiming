@@ -4,6 +4,7 @@ from models.experimental import attempt_load
 from utils.dataloaders import letterbox
 from utils.general import check_img_size, non_max_suppression, scale_boxes, xyxy2xywh
 import warnings
+import time
 
 warnings.filterwarnings("ignore")
 # choose device
@@ -47,9 +48,11 @@ def detect(img0):
         img /= 255.0  # 0 - 255 to 0.0 - 1.0
         if img.ndimension() == 3:
             img = img.unsqueeze(0)
+        predict_start = time.time()
         pred = model(img, augment=False)[0]        
         # Apply NMS
         pred = non_max_suppression(pred, 0.25, 0.45)
+        predict_time = time.time() - predict_start
         # Process detections
         detections = []
         for i, det in enumerate(pred):  # detections per image
@@ -65,4 +68,4 @@ def detect(img0):
                     cls = names[int(cls)]
                     conf = float(conf)
                     detections.append({'class': cls, 'conf': conf, 'position': xywh})
-        return detections
+        return detections, predict_time

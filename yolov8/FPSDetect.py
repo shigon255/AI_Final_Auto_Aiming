@@ -34,7 +34,9 @@ def detect(img0):
     detections = []
     conf = 0.25
     iou = 0.45
+    predict_start = time.time()
     results = model.predict(img0, conf=conf, iou=iou,half = True)
+    predict_time = time.time() - predict_start
     for i in range(len(results)):
         print("Box " + str(i))
         result = results[i]
@@ -55,5 +57,5 @@ def detect(img0):
             conf = float(confs[j])
             detections.append({'class': cls, 'conf': conf, 'position': xywh})
         
-    return detections
+    return detections, predict_time
 

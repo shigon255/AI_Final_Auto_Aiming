@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import csv
 import cv2
+import time
 
 # from visualize_single_image.py
 def load_classes(csv_reader):
@@ -97,10 +98,12 @@ def detect(img0):
             image = image.half()
 
         print(image.shape, image_orig.shape, scale)
+        predict_start = time.time()
         if torch.cuda.is_available():
             scores, classification, transformed_anchors = model(image)
         else:
             scores, classification, transformed_anchors = model(image.cuda().float())
+        predict_time = time.time() - predict_start
         # for debug
         print("scores: ", scores) # save the stores of each box
         print("classification: ", classification) # save the labels of each box
@@ -130,4 +133,4 @@ def detect(img0):
             # draw_caption(image_orig, (x1, y1, x2, y2), caption)
             # cv2.rectangle(image_orig, (x1, y1), (x2, y2), color=(0, 0, 255), thickness=2)
             detections.append({'class': cls, 'score': score, 'position': xywh})
-    return detections
+    return detections, predict_time
