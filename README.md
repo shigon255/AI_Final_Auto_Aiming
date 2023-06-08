@@ -71,9 +71,10 @@
 
 ## TODO
 - [X] Delete Keyboard instruction
-- [] Parameters update
-- [] Reference update
-  - [] yolov8 apex assist
-  - [] TensorRT
-- [] Model analysis
-- [] PID controll
+- [O] Parameters update
+- [O] Reference update
+  - [X] yolov8 apex assist
+  - [O] TensorRT
+- [O] Model analysis
+- [O] PID controll
+- [O] Thread graceful end
