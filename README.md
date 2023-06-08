@@ -11,14 +11,14 @@
 
 # Usage
 ## Setup & Execute the program
++ build environment from environment.yml
+
 ### yolov5 & yolov8
-+ build environment from yolo_environment.yml
 + clone the repo
 + cd yolov5/yolov8
 + python Main.py
 
 ### retinanet
-+ build environment from retinanet_environment.yml
 + clone the repo
 + cd retinanet
 + Name your trained model "model_final.pt" and put it in retinanet directory
@@ -42,7 +42,7 @@
 
 ### Training hyper parameters of default models
 + yolov5: yolov5s, epoch 50, batch size 16.
-+ yolov8: yolov8n, epoch 100, batch size 16.
++ yolov8: yolov8n, epoch 50, batch size 16.
 + retinanet: No default model, need to download/train by yourself.
 
 ### Model prediction parameters
@@ -66,15 +66,3 @@
 + In yolov8, we add tensorRT support. You can first transfer yolov8 model into tensorRT model, and change the model name in FPSDetect.py to use tensorRT model to detect.
   + How to transfer model into tensorRT: [TensorRT-For-YOLO-Series](https://github.com/Linaom1214/TensorRT-For-YOLO-Series)
   + Note that you need to prepare environment for executing tensorRT
-
-
-
-## TODO
-- [X] Delete Keyboard instruction
-- [O] Parameters update
-- [O] Reference update
-  - [X] yolov8 apex assist
-  - [O] TensorRT
-- [O] Model analysis
-- [O] PID controll
-- [O] Thread graceful end
