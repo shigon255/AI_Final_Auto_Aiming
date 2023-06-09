@@ -1,38 +1,51 @@
 # AI_Final_Auto_Aiming
-+ This is the repo of our final project of Intro. to AI, Spring 2023. The aim of this project is to test different model's performance on auto aiming in FPS game.
-+ We choose to train models that can be used in game "Apex legend".
-+ We try 3 different models: [yolov5](https://github.com/ultralytics/yolov5), [yolov8](https://github.com/ultralytics/ultralytics) and retinanet.
-+ The implementation of retinanet on pytorch is from [this project](https://github.com/yhenon/pytorch-retinanet).
-+ The Auto aiming part is mainly from [this project](https://github.com/chaoyu1999/FPSAutomaticAiming).
-+ Part of the implementation is from [this project](https://github.com/Franklin-Zhang0/Yolo-v8-Apex-Aim-assist)
-+ We trained our models by [this dataset](https://github.com/goldjee/AL-YOLO-dataset).
+
+## Project Overview
++ This is the repo of our final project of Intro. to AI, Spring 2023. 
++ The aim of this project is to build an automatic aiming system, and test different model's performance on auto aiming in FPS game.
++ We choosed to train models that can be used in game "Apex legend".
++ We tried 3 different models: [yolov5](https://github.com/ultralytics/yolov5), [yolov8](https://github.com/ultralytics/ultralytics) and [retinanet](https://arxiv.org/abs/1708.02002).
 + This project is only for education and research purpose. Using this project in real game might make your account be banned. Please take your own risk.
 
+## Experiment results
++ We conducted experiments on yolov5n, yolov5s, yolov8n, yolov8s, yolov8m, retinanet models
++ All models are trained on the same dataset, with epoch = 50, batch size = 16
++ We evaluate the performance of each models by below 3 indices
+  + Average FPS of the aiming system
+  + Average time the model take to do single detection 
+  + mAP with iou threshold = 0.5
++ Results
+|Model |Average time(s)|Average FPS|mAP|
+|-----|--------|--------|--------|
+|yolov5n|0.00988|39.7632|0.97765|
+|yolov5s|0.00977|37.87687|0.98936|
+|yolov8n|0.01820|32.91317|0.94717|
+|yolov8s|0.01771|35.78728|0.95776|
+|yolov8m|0.02174|33.95591|0.96542|
+|retinanet|0.04593|10.54922|0.94745|
 
-# Usage
-## Setup & Execute the program
+## Usage
+### Setup & Execute the program
 + build environment from environment.yml
-
-### yolov5 & yolov8
-+ clone the repo
-+ cd yolov5/yolov8
-+ python Main.py
-
-### retinanet
-+ clone the repo
-+ cd retinanet
-+ Name your trained model "model_final.pt" and put it in retinanet directory
-+ python Main.py
++ yolov5 & yolov8
+  + clone the repo
+  + cd yolov5/yolov8
+  + python Main.py
++ retinanet
+  + clone the repo  
+  + cd retinanet
+  + Name your trained model "model_final.pt" and put it in retinanet directory
+  + python Main.py
 
 ### Setting
 + Some parameters(Screen size, ...) should be modified to fit your own device. You can modify them in utils/FPSUtils.py in each directories.
 + There're also some parameter that might affect the accuracy of the system. Detail of parameters will be described below.
 
-## How to control
+### How to control
 + Click the right mouse button, the mouse will move toward the object(if detected) automatically.
 + Press Ctrl + C to terminate the program.
 
-## Models
+### Models
 + Currently, models of yolov5 and yolov8 by different training hyper parameters is available in "models" directory.
 + For yolov5 and yolov8, you can use default model that is already in each directories, or you can choose different models from "models" or models trained by yourself. Just replace "best.pt" in the yolov5 and yolov8 directory with the model you want.
 + For retinanet, unfortunately,  the size of model is too large to upload to github repo. We provide a [link](https://drive.google.com/drive/folders/19SnXHvO3bah2VFTYwys-7Q9WShWE9VTo?usp=sharing) to google drive that contain every models we train, including retinanet models. You can replace "model_final.pt" in retinanet directory with the model you want. 
@@ -66,3 +79,9 @@
 + In yolov8, we add tensorRT support. You can first transfer yolov8 model into tensorRT model, and change the model name in FPSDetect.py to use tensorRT model to detect.
   + How to transfer model into tensorRT: [TensorRT-For-YOLO-Series](https://github.com/Linaom1214/TensorRT-For-YOLO-Series)
   + Note that you need to prepare environment for executing tensorRT
+
+## Reference
++ The implementation of retinanet on pytorch is from [this project](https://github.com/yhenon/pytorch-retinanet).
++ The Auto aiming part is mainly from [this project](https://github.com/chaoyu1999/FPSAutomaticAiming).
++ Part of the implementation is from [this project](https://github.com/Franklin-Zhang0/Yolo-v8-Apex-Aim-assist)
++ We trained our models by [this dataset](https://github.com/goldjee/AL-YOLO-dataset).
