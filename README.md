@@ -15,6 +15,7 @@
   + Average time the model take to do single detection 
   + mAP with iou threshold = 0.5
 + Results
+
 |Model |Average time(s)|Average FPS|mAP|
 |-----|--------|--------|--------|
 |yolov5n|0.00988|39.7632|0.97765|
@@ -79,6 +80,15 @@
 + In yolov8, we add tensorRT support. You can first transfer yolov8 model into tensorRT model, and change the model name in FPSDetect.py to use tensorRT model to detect.
   + How to transfer model into tensorRT: [TensorRT-For-YOLO-Series](https://github.com/Linaom1214/TensorRT-For-YOLO-Series)
   + Note that you need to prepare environment for executing tensorRT
+
+## Videos
++ [Project representation](https://youtu.be/LWb7hWWDsR8)
++ [Project demo](https://www.youtube.com/watch?v=PdI-JhGfUEU)
+
+## Future work
++ Full TensorRT support
++ Thorough experiments
++ More models
 
 ## Reference
 + The implementation of retinanet on pytorch is from [this project](https://github.com/yhenon/pytorch-retinanet).
