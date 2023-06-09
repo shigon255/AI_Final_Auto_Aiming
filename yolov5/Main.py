@@ -10,13 +10,12 @@ import utils.ghub_mouse as ghub
 import traceback
 from PIL import Image
 import pynput
-# from MyListener import listen_key, listen_mouse, get_S_L, Mouse_redirection, Move_Mouse
 # VK_W = 0x06
 # VK_R = 0x52
 
 lock_mode = False
 lock_button = eval('pynput.mouse.Button.' + 'x2')
-# Start listen the right mouse button and the esc
+# Start listen the mouse side button
 
 def on_click(x,y,button,is_press):
     global lock_mode
